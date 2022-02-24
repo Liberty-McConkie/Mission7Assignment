@@ -9,24 +9,10 @@
 
 @foreach (Book b in Model.Books)
 {
-    <div class="card card-outline-primary m-1 p-1">
-        <div class="bg-light p-1">
-            <h3>@b.Title</h3>
-            <span class="badge bg-info" style="float:right">
-                Author: @b.Author
-            </span>
-        </div>
-
-        <ul>
-            <li>Publisher: @b.Publisher</li>
-            <li>Classification: @b.Classification</li>
-            <li>Category: @b.Category</li>
-            <li>ISBN: @b.Isbn</li>
-            <li>Page Count: @b.PageCount</li>
-            <li>Price: $@b.Price</li>
-        </ul>
-    </div>
+    <partial name="BookSummary" model="b" />
 }
     
 
-    <div page-model="@Model.PageInfo" page-action="Index"></div>
+
+<div page-model="@Model.PageInfo" page-action="Index" page-class="btn"
+     page-class-selected="btn-primary" page-class-normal="btn-outline-dark" page-class-enabled="true"></div>
