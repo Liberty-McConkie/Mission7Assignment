@@ -1,0 +1,61 @@
+﻿
+@{
+}
+
+@model Order
+
+<h2>Complete Order Now</h2>
+<p>Enter your information below to complete your purchase</p>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" asp-controller="Order" asp-action="Checkout">
+    <h4>Contact Information</h4>
+
+    <div class="form-group">
+        <label asp-for="Name">Name: </label><input asp-for="Name" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="Phone" class="form-group">Phone: </label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="Email" class="form-group">Email: </label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+
+    <h4>Ship To</h4>
+    <div>
+        <label asp-for="AddressLine1" class="form-group">Address Line 1: </label>
+        <input asp-for="AddressLine1" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="AddressLine2" class="form-group">Address Line 2: </label>
+        <input asp-for="AddressLine2" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="AddressLine3" class="form-group">Address Line 3: </label>
+        <input asp-for="AddressLine3" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="City" class="form-group">City: </label>
+        <input asp-for="City" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="State" class="form-group">State: </label>
+        <input asp-for="State" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="Zip" class="form-group">Zip: </label>
+        <input asp-for="Zip" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="Country" class="form-group">Country: </label>
+        <input asp-for="Country" class="form-control" />
+    </div>
+
+    <div class="float-end">
+        <input class="btn btn-primary" type="submit" value="Submit Order" />
+    </div>
+
+</form>
