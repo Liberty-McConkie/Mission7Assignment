@@ -1,0 +1,41 @@
+﻿@page "/admin/orders"
+@inherits OwningComponentBase<IOrderRepository>
+
+<OrderTable TableTitle="Unfulfilled Orders" Orders="UnfulfilledOrders"
+            ButtonLabel="Fulfilled" OrderShipped="OrderShipped"></OrderTable>
+
+<OrderTable TableTitle="Fulfilled Orders" Orders="FinishedOrders"
+            ButtonLabel="Reset" OrderShipped="ResetOrder"></OrderTable>
+<button class="btn btn-info" @onclick="@(x => UpdateData())">Refresh Data</button>
+
+@code {
+
+    public IOrderRepository repo => Service;
+
+    public IEnumerable<Order> AllOrders { get; set; }
+    public IEnumerable<Order> UnfulfilledOrders { get; set; }
+    public IEnumerable<Order> FinishedOrders { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await UpdateData();
+    }
+
+    public async Task UpdateData()
+    {
+        AllOrders = await repo.Orders.ToListAsync();
+        UnfulfilledOrders = AllOrders.Where(x => !x.OrderReceived);
+        FinishedOrders = AllOrders.Where(x => x.OrderReceived);
+
+    }
+
+    public void OrderShipped(int id) => UpdateOrder(id, true);
+    public void ResetOrder(int id) => UpdateOrder(id, false);
+
+    public void UpdateOrder (int id, bool ordered)
+    {
+        Order o = repo.Orders.FirstOrDefault(x => x.OrderId == id);
+        o.OrderReceived = ordered;
+        repo.SaveOrder(o);
+    }
+}
