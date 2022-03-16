@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,10 +29,15 @@ namespace Mission7Assignment
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<BookstoreContext> (options => 
-            {
-                options.UseSqlite(Configuration["ConnectionStrings:BookDBConnection"]);
-            });
+            services.AddDbContext<BookstoreContext>(options =>
+           {
+               options.UseSqlite(Configuration["ConnectionStrings:BookDBConnection"]);
+           });
+
+            services.AddDbContext<AppIdentityDBContext>(options =>
+                options.UseSqlite(Configuration["ConnectionStrings:IdentityConnection"]));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDBContext>();
 
             services.AddScoped<IBookstoreRepository, EFBookstoreRepository>();
             services.AddScoped<IOrderRepository, EFOrderRepository>();
@@ -64,6 +70,8 @@ namespace Mission7Assignment
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -91,6 +99,8 @@ namespace Mission7Assignment
 
                 endpoints.MapFallbackToPage("/admin/{*catchall}", "/Admin/Index");
             });
+
+            IdentitySeedData.EnsurePopulated(app);
         }
     }
 }
